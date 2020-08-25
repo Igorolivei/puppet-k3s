@@ -1,0 +1,81 @@
+# @summary A short summary of the purpose of this class
+#
+# A description of what this class does
+#
+# @example
+#   include k3s::install
+class k3s::install {
+  case $k3s::installation_mode {
+    'script': {
+      archive { '/tmp/k3s_install.sh':
+        ensure           => present,
+        filename         => '/tmp/k3s_install.sh',
+        source           => 'https://get.k3s.io',
+        creates          => '/tmp/k3s_install.sh',
+        download_options => ['-s'],
+        cleanup          => false,
+      }
+
+      file { '/tmp/k3s_install.sh':
+        ensure  => file,
+        mode    => '0744',
+        require => [
+          Archive['/tmp/k3s_install.sh'],
+        ],
+      }
+
+      exec { '/tmp/k3s_install.sh':
+        require     => [
+          File['/tmp/k3s_install.sh'],
+        ],
+        subscribe   => [
+          Archive['/tmp/k3s_install.sh'],
+        ],
+        refreshonly => true,
+      }
+    }
+
+    'binary': {
+      case $k3s::binary_arch {
+        'amd64': {
+          $binary_arch = 'k3s'
+          $checksum_arch = 'sha256sum-amd64.txt'
+        }
+        'arm64': {
+          $binary_arch = 'k3s-arm64'
+          $checksum_arch = 'sha256sum-arm64.txt'
+        }
+        'armhf': {
+          $binary_arch = 'k3s-armhf'
+          $checksum_arch = 'sha256sum-arm.txt'
+        }
+        default: {
+          fail('No valid architecture provided.')
+        }
+      }
+      $k3s_url = "https://github.com/rancher/k3s/releases/download/${k3s::binary_version}+k3s1/${binary_arch}"
+      $k3s_checksum_url = "https://github.com/rancher/k3s/releases/download/${k3s::binary_version}+k3s1/${checksum_arch}"
+
+      archive { $k3s::binary_path:
+        ensure           => present,
+        source           => $k3s_url,
+        checksum_url     => $k3s_checksum_url,
+        checksum_type    => 'sha256',
+        creates          => $k3s::binary_path,
+        download_options => '-S',
+      }
+
+      file { $k3s::binary_path:
+        ensure  => file,
+        mode    => '0775',
+        require => [
+          Archive[$k3s::binary_path],
+        ],
+      }
+    }
+
+    default: {
+      fail('No valid installation mode provided.')
+    }
+  }
+}
