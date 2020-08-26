@@ -24,7 +24,7 @@ like in a School Lab or in a Raspberry Pi cluster.
 
 Install this module using Puppet: `puppet module install igorolivei/k3s`
 
-Or via Puppetfile: `mod 'igorolivei-vscode', '1.0.0'`
+Or via Puppetfile: `mod 'igorolivei-k3s', '1.0.0'`
 
 ## Usage
 

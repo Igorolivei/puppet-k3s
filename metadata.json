@@ -1,13 +1,17 @@
 {
   "name": "igorolivei-k3s",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Igor Oliveira",
   "summary": "Install k3s, an open-source lightweight kubernetes.",
   "license": "Apache-2.0",
   "source": "https://github.com/Igorolivei/puppet-k3s",
+  "project_page": "https://github.com/Igorolivei/puppet-k3s",
   "issues_url": "https://github.com/Igorolivei/puppet-k3s/issues",
   "dependencies": [
-
+    {
+      "name": "puppet/archive",
+      "version_requirement": ">= 4.6.0"
+    }
   ],
   "operatingsystem_support": [
     {
@@ -51,10 +55,6 @@
     {
       "name": "puppet",
       "version_requirement": ">= 4.10.0 < 7.0.0"
-    },
-    {
-      "name": "puppet-archive",
-      "version_requirement": "~= 4.6.0"
     }
   ],
   "pdk-version": "1.18.1",
