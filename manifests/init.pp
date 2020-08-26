@@ -7,7 +7,6 @@
 class k3s (
   Enum['present', 'absent'] $ensure,
   Enum['script', 'binary'] $installation_mode,
-  Optional[Enum['amd64', 'arm64', 'armhf']] $binary_arch,
   Optional[String] $binary_version,
   Optional[String] $binary_path,
 ) {

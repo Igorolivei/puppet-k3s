@@ -1,6 +1,5 @@
 ---
 k3s::ensure: 'present'
 k3s::installation_mode: 'script'
-k3s::binary_arch: 'amd64'
 k3s::binary_version: 'v1.18.8'
 k3s::binary_path: '/usr/bin/k3s'

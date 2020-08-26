@@ -36,7 +36,7 @@ class k3s::install {
     }
 
     'binary': {
-      case $k3s::binary_arch {
+      case $facts['os']['architecture'] {
         'amd64': {
           $binary_arch = 'k3s'
           $checksum_arch = 'sha256sum-amd64.txt'
