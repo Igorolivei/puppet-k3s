@@ -1,9 +1,4 @@
-# @summary A short summary of the purpose of this class
-#
-# A description of what this class does
-#
-# @example
-#   include k3s::install
+# @summary Class responsible for installing k3s
 class k3s::install {
   case $k3s::installation_mode {
     'script': {
