@@ -63,7 +63,7 @@ class k3s::install {
 
       file { $k3s::binary_path:
         ensure  => file,
-        mode    => '0775',
+        mode    => '0755',
         require => [
           Archive[$k3s::binary_path],
         ],
