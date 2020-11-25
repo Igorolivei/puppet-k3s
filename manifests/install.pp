@@ -56,6 +56,7 @@ class k3s::install {
         source           => $k3s_url,
         checksum_url     => $k3s_checksum_url,
         checksum_type    => 'sha256',
+        cleanup          => false,
         creates          => $k3s::binary_path,
         download_options => '-S',
       }
