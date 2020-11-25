@@ -18,7 +18,7 @@ class k3s (
 ) {
   if $installation_mode == 'binary' and (!$binary_path or !$binary_version) {
     fail('The vars $binary_version and $binary_path must be set when using the \
-      script installation mode.')
+      binary installation mode.')
   }
 
   if $ensure == 'present' {
