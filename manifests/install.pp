@@ -32,7 +32,7 @@ class k3s::install {
 
     'binary': {
       case $facts['os']['architecture'] {
-        'amd64': {
+        'amd64', 'x86_64': {
           $binary_arch = 'k3s'
           $checksum_arch = 'sha256sum-amd64.txt'
         }
@@ -48,21 +48,22 @@ class k3s::install {
           fail('No valid architecture provided.')
         }
       }
-      $k3s_url = "https://github.com/rancher/k3s/releases/download/${k3s::binary_version}+k3s1/${binary_arch}"
-      $k3s_checksum_url = "https://github.com/rancher/k3s/releases/download/${k3s::binary_version}+k3s1/${checksum_arch}"
+      $k3s_url = "https://github.com/rancher/k3s/releases/download/${k3s::binary_version}/${binary_arch}"
+      $k3s_checksum_url = "https://github.com/rancher/k3s/releases/download/${k3s::binary_version}/${checksum_arch}"
 
       archive { $k3s::binary_path:
         ensure           => present,
         source           => $k3s_url,
         checksum_url     => $k3s_checksum_url,
         checksum_type    => 'sha256',
+        cleanup          => false,
         creates          => $k3s::binary_path,
         download_options => '-S',
       }
 
       file { $k3s::binary_path:
         ensure  => file,
-        mode    => '0775',
+        mode    => '0755',
         require => [
           Archive[$k3s::binary_path],
         ],

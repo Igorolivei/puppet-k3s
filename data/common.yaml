@@ -1,5 +1,5 @@
 ---
 k3s::ensure: 'present'
 k3s::installation_mode: 'script'
-k3s::binary_version: 'v1.18.8'
+k3s::binary_version: 'v1.19.4+k3s1'
 k3s::binary_path: '/usr/bin/k3s'
