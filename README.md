@@ -70,3 +70,4 @@ class { 'k3s':
 ## Release Notes/Contributors/Etc.
 
 - Author: Igor Oliveira (igor.bezerra96@gmail.com)
+- Contributor: Pete Fritchman (@fetep)
