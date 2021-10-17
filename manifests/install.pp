@@ -2,30 +2,26 @@
 class k3s::install {
   case $k3s::installation_mode {
     'script': {
-      archive { '/tmp/k3s_install.sh':
+      $script_path = '/usr/local/bin/k3s-install.sh'
+
+      archive { $script_path:
         ensure           => present,
-        filename         => '/tmp/k3s_install.sh',
+        filename         => $script_path,
         source           => 'https://get.k3s.io',
-        creates          => '/tmp/k3s_install.sh',
+        creates          => $script_path,
         download_options => ['-s'],
         cleanup          => false,
       }
 
-      file { '/tmp/k3s_install.sh':
+      file { $script_path:
         ensure  => file,
         mode    => '0744',
-        require => [
-          Archive['/tmp/k3s_install.sh'],
-        ],
+        require => Archive[$script_path],
       }
 
-      exec { '/tmp/k3s_install.sh':
-        require     => [
-          File['/tmp/k3s_install.sh'],
-        ],
-        subscribe   => [
-          Archive['/tmp/k3s_install.sh'],
-        ],
+      exec { $script_path:
+        require     => File[$script_path],
+        subscribe   => Archive[$script_path],
         refreshonly => true,
       }
     }
