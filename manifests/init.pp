@@ -2,6 +2,15 @@
 #
 # This class is reponsible to call the install or uninstall classes
 #
+# @param ensure
+#     Ensure if present or absent.
+# @param installation_mode
+#     Specify if installation should be done via script or if the binary should be used.
+# @param binary_version
+#     Version of binary to use. (Only required for $installation_mode = 'binary'.)
+# @param binary_path
+#     Destination path of the binary. (Only required for $installation_mode = 'binary'.)
+#
 # @example
 #   include k3s
 #
