@@ -15,7 +15,7 @@ class k3s::install {
 
       file { $script_path:
         ensure  => file,
-        mode    => '0744',
+        mode    => '0755',
         require => Archive[$script_path],
       }
 
