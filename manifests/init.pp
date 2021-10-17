@@ -11,10 +11,10 @@
 #     binary_path       => '/home/john-doe/bin/k3s',
 #   }
 class k3s (
-  Enum['present', 'absent'] $ensure,
-  Enum['script', 'binary'] $installation_mode,
-  String $binary_version,
-  String $binary_path,
+  Enum['present', 'absent'] $ensure            = present,
+  Enum['script', 'binary']  $installation_mode = 'script',
+  String                    $binary_version    = 'v1.19.4+k3s1',
+  String                    $binary_path       = '/usr/bin/k3s',
 ) {
   if $installation_mode == 'binary' and (!$binary_path or !$binary_version) {
     fail('The vars $binary_version and $binary_path must be set when using the \
