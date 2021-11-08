@@ -21,8 +21,8 @@ class k3s::install {
 
       $token = pick($k3s::token, fqdn_rand_string(32))
       $args = $k3s::operation_mode ? {
-        'agent'  => "--token ${token} --server ${$k3s::server} ${k3s::custom_args}",
-        default  => "--token ${token} ${k3s::custom_args}",
+        'agent'  => "--token ${token} --server ${$k3s::server} ${k3s::custom_agent_args}",
+        default  => "--token ${token} ${k3s::custom_server_args}",
       }
 
       exec { "${script_path} ${k3s::operation_mode} ${args}":
