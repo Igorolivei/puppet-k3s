@@ -24,11 +24,18 @@ class k3s::install {
         'agent'  => "--token ${token} --server ${$k3s::server} ${k3s::custom_agent_args}",
         default  => "--token ${token} --server ${$k3s::server} ${k3s::custom_server_args}",
       }
+      $command = "${script_path} ${k3s::operation_mode} ${args}"
 
-      exec { "${script_path} ${k3s::operation_mode} ${args}":
-        require     => File[$script_path],
-        subscribe   => Archive[$script_path],
-        refreshonly => true,
+      if $k3s::operation_mode == 'agent' {
+        exec { $command:
+          require     => File[$script_path],
+          subscribe   => Archive[$script_path],
+          refreshonly => true,
+        }
+      } else {
+        notify { 'Manual server initialisation required':
+          message => $command,
+        }
       }
     }
 
