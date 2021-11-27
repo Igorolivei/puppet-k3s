@@ -45,7 +45,8 @@ class k3s (
   Enum['server', 'agent']   $operation_mode     = 'server',
   Optional[String]          $token              = undef,
   Optional[String]          $server             = undef,
-  Hash                      $config             = {},
+  Hash                      $server_config      = {},
+  Hash                      $agent_config       = {},
   String                    $custom_server_args = '',
   String                    $custom_agent_args  = '',
 ) {

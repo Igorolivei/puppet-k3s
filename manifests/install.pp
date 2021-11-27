@@ -25,6 +25,10 @@ class k3s::install {
     group  => 'root',
     mode   => '0755',
   }
+  $_config = $k3s::operation_mode ? {
+    'agent' => $k3s::agent_config,
+    default => $k3s::server_config,
+  }
   file { '/etc/rancher/k3s/config.yaml':
     ensure  => file,
     owner   => 'root',
@@ -32,7 +36,7 @@ class k3s::install {
     mode    => '0600',
     content => to_yaml(merge({
       token => $token,
-    }, $k3s::config)),
+    }, $_config)),
   }
 
   $args = $k3s::operation_mode ? {
