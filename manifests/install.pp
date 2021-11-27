@@ -18,6 +18,23 @@ class k3s::install {
   }
 
   $token = pick($k3s::token, fqdn_rand_string(32))
+
+  file { ['/etc/rancher', '/etc/rancher/k3s']:
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+  file { '/etc/rancher/k3s/config.yaml':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0600',
+    content => to_yaml(merge({
+      token => $token,
+    }, $k3s::config)),
+  }
+
   $args = $k3s::operation_mode ? {
     'agent'  => "--token ${token} --server ${$k3s::server} ${k3s::custom_agent_args}",
     default  => "--token ${token} ${k3s::custom_server_args}",

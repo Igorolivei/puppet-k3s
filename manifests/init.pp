@@ -16,6 +16,8 @@
 #     Server URL of the master node. (Only required for $type = 'agent'.)
 #     Format: https://192.168.1.11:6443 or https://k3s-master:6443
 #     (Only for installation_mode = 'script'.)
+# @param config
+#     Custom k3s config.
 # @param custom_server_args
 #     Custom server arguments to use
 #     (Only for installation_mode = 'script' and operation_mode = 'server'.)
@@ -43,6 +45,7 @@ class k3s (
   Enum['server', 'agent']   $operation_mode     = 'server',
   Optional[String]          $token              = undef,
   Optional[String]          $server             = undef,
+  Hash                      $config             = {},
   String                    $custom_server_args = '',
   String                    $custom_agent_args  = '',
 ) {
