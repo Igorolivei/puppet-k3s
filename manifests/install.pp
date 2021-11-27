@@ -40,8 +40,8 @@ class k3s::install {
   }
 
   $args = $k3s::operation_mode ? {
-    'agent'  => "--token ${token} --server ${$k3s::server} ${k3s::custom_agent_args}",
-    default  => "--token ${token} ${k3s::custom_server_args}",
+    'agent'  => "--server ${$k3s::server}",
+    default  => "",
   }
   if $k3s::version == 'stable' or $k3s::version == 'latest' {
     $version_env = "INSTALL_K3S_CHANNEL=${k3s::version}"

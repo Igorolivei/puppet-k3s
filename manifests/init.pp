@@ -16,14 +16,10 @@
 #     Server URL of the master node. (Only required for $type = 'agent'.)
 #     Format: https://192.168.1.11:6443 or https://k3s-master:6443
 #     (Only for installation_mode = 'script'.)
-# @param config
-#     Custom k3s config.
-# @param custom_server_args
-#     Custom server arguments to use
-#     (Only for installation_mode = 'script' and operation_mode = 'server'.)
-# @param custom_agent_args
-#     Custom agent arguments to use
-#     (Only for installation_mode = 'script' and operation_mode = 'agent'.)
+# @param server_config
+#     Custom k3s server config.
+# @param agent_config
+#     Custom k3s agent config.
 #
 # @example Standalone server
 #   include k3s
@@ -47,8 +43,6 @@ class k3s (
   Optional[String]          $server             = undef,
   Hash                      $server_config      = {},
   Hash                      $agent_config       = {},
-  String                    $custom_server_args = '',
-  String                    $custom_agent_args  = '',
 ) {
   if $ensure == 'present' {
     include k3s::install
