@@ -41,7 +41,7 @@
 #   }
 class k3s (
   Enum['present', 'absent'] $ensure             = present,
-  Optional[String]          $version            = 'stable',
+  String                    $version            = 'stable',
   Enum['server', 'agent']   $operation_mode     = 'server',
   Optional[String]          $token              = undef,
   Optional[String]          $server             = undef,
