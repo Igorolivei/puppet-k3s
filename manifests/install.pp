@@ -27,9 +27,12 @@ class k3s::install {
   } else {
     $version_env = "INSTALL_K3S_VERSION=${k3s::version}"
   }
-  $command = "${version_env} ${script_path} ${k3s::operation_mode} ${args}"
+  $command = "${script_path} ${k3s::operation_mode} ${args}"
 
   exec { $command:
+    environment => [
+      $version_env,
+    ],
     require     => File[$script_path],
     subscribe   => Archive[$script_path],
     refreshonly => true,
