@@ -56,7 +56,7 @@ class k3s::install {
       $version_env,
     ],
     require     => File[$script_path],
-    subscribe   => Archive[$script_path],
+    subscribe   => [Archive[$script_path], File['/etc/rancher/k3s/config.yaml']],
     refreshonly => true,
   }
 }
