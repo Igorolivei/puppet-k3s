@@ -35,12 +35,13 @@ class k3s::install {
     group   => 'root',
     mode    => '0600',
     content => to_yaml(merge({
-      token => $token,
+      token  => $token,
+      server => $k3s::server,
     }, $_config)),
   }
 
   $args = $k3s::operation_mode ? {
-    'agent'  => "--server ${$k3s::server}",
+    'server' => "--cluster-init",
     default  => "",
   }
   if $k3s::version == 'stable' or $k3s::version == 'latest' {
