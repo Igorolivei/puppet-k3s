@@ -1,6 +1,13 @@
 # @summary Class responsible for installing k3s
 class k3s::install {
   $script_path = '/usr/local/bin/k3s-install.sh'
+  $k3s_config = '/etc/rancher/k3s/config.yaml'
+  $k3s_version = '/etc/rancher/k3s/version.env'
+
+  File {
+    owner => 'root',
+    group => 'root',
+  }
 
   archive { $script_path:
     ensure           => present,
@@ -21,18 +28,14 @@ class k3s::install {
 
   file { ['/etc/rancher', '/etc/rancher/k3s']:
     ensure => directory,
-    owner  => 'root',
-    group  => 'root',
     mode   => '0755',
   }
   $_config = $k3s::operation_mode ? {
     'agent' => $k3s::agent_config,
     default => $k3s::server_config,
   }
-  file { '/etc/rancher/k3s/config.yaml':
+  file { $k3s_config:
     ensure  => file,
-    owner   => 'root',
-    group   => 'root',
     mode    => '0600',
     content => to_yaml(merge({
       token  => $token,
@@ -40,14 +43,21 @@ class k3s::install {
     }, $_config)),
   }
 
-  $args = $k3s::operation_mode ? {
-    'server' => "--cluster-init",
-    default  => "",
-  }
   if $k3s::version == 'stable' or $k3s::version == 'latest' {
     $version_env = "INSTALL_K3S_CHANNEL=${k3s::version}"
   } else {
     $version_env = "INSTALL_K3S_VERSION=${k3s::version}"
+  }
+  # This is a hack to have a file that changes to trigger a re-execution of the exec of the command below
+  file { $k3s_version:
+    ensure  => file,
+    mode    => '0644',
+    content => $version_env,
+  }
+
+  $args = $k3s::operation_mode ? {
+    'server' => "--cluster-init",
+    default  => "",
   }
   $command = "${script_path} ${k3s::operation_mode} ${args}"
 
@@ -56,7 +66,7 @@ class k3s::install {
       $version_env,
     ],
     require     => File[$script_path],
-    subscribe   => [Archive[$script_path], File['/etc/rancher/k3s/config.yaml']],
+    subscribe   => [Archive[$script_path], File[$k3s_config], File[$k3s_version]],
     refreshonly => true,
   }
 }
