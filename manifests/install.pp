@@ -25,11 +25,6 @@ class k3s::install {
     group  => 'root',
     mode   => '0755',
   }
-  if $k3s::version == 'stable' or $k3s::version == 'latest' {
-    $version = { install-k3s-channel => $k3s::version }
-  } else {
-    $version = { install-k3s-version => $k3s::version }
-  }
   $_config = $k3s::operation_mode ? {
     'agent' => $k3s::agent_config,
     default => $k3s::server_config,
@@ -42,16 +37,24 @@ class k3s::install {
     content => to_yaml(merge({
       token  => $token,
       server => $k3s::server,
-    }, $_config, $version)),
+    }, $_config)),
   }
 
   $args = $k3s::operation_mode ? {
     'server' => "--cluster-init",
     default  => "",
   }
+  if $k3s::version == 'stable' or $k3s::version == 'latest' {
+    $version_env = "INSTALL_K3S_CHANNEL=${k3s::version}"
+  } else {
+    $version_env = "INSTALL_K3S_VERSION=${k3s::version}"
+  }
   $command = "${script_path} ${k3s::operation_mode} ${args}"
 
   exec { $command:
+    environment => [
+      $version_env,
+    ],
     require     => File[$script_path],
     subscribe   => [Archive[$script_path], File['/etc/rancher/k3s/config.yaml']],
     refreshonly => true,
