@@ -16,12 +16,9 @@ class k3s::install {
     creates          => $script_path,
     download_options => ['-s'],
     cleanup          => false,
-  }
-
-  file { $script_path:
-    ensure  => file,
-    mode    => '0755',
-    require => Archive[$script_path],
+  } -> file { $script_path:
+    ensure => file,
+    mode   => '0755',
   }
 
   $token = pick($k3s::token, fqdn_rand_string(32))
@@ -56,8 +53,8 @@ class k3s::install {
   }
 
   $args = $k3s::operation_mode ? {
-    'server' => "--cluster-init",
-    default  => "",
+    'server' => '--cluster-init',
+    default  => '',
   }
   $command = "${script_path} ${k3s::operation_mode} ${args}"
 
