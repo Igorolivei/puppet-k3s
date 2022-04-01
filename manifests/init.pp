@@ -43,6 +43,7 @@ class k3s (
   Optional[String]          $server             = undef,
   Hash                      $server_config      = {},
   Hash                      $agent_config       = {},
+  Hash                      $kubelet_config     = {},
 ) {
   if $ensure == 'present' {
     include k3s::install
