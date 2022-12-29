@@ -20,6 +20,9 @@ class k3s::install {
       }
 
       exec { '/tmp/k3s_install.sh':
+        environment => [
+          "INSTALL_K3S_VERSION=${k3s::binary_version}",
+        ],
         require     => [
           File['/tmp/k3s_install.sh'],
         ],
