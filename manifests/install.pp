@@ -40,9 +40,21 @@ class k3s::install {
           $binary_arch = 'k3s-arm64'
           $checksum_arch = 'sha256sum-arm64.txt'
         }
+        'aarch64': {
+          $binary_arch = 'k3s-arm64'
+          $checksum_arch = 'sha256sum-arm64.txt'
+        }
         'armhf': {
           $binary_arch = 'k3s-armhf'
           $checksum_arch = 'sha256sum-arm.txt'
+        }
+        's390x': {
+          $binary_arch = 'k3s-s390x'
+          $checksum_arch = 'sha256sum-s390x.txt'
+        }
+        'x86_64': {
+          $binary_arch = 'k3s-amd64'
+          $checksum_arch = 'sha256sum-amd64.txt'
         }
         default: {
           fail('No valid architecture provided.')
